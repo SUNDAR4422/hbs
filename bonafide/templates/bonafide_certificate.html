@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hostel Fee Certificate</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            font-size: 11pt;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 10mm;
+            background: #fff;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .border-container {
+            border: 3px double #002147;
+            padding: 25px 35px;
+            height: 272mm;
+            position: relative;
+            background-color: #fff;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* WATERMARK IMAGE */
+        .watermark-img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: auto;
+            opacity: 0.08;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* --- HEADER --- */
+        .top-section-wrapper {
+            display: block;
+        }
+
+        .header-section {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 2px solid #002147;
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            min-height: 80px;
+        }
+
+        .logo-img {
+            position: absolute;
+            left: 0;
+            width: 70px;
+            height: auto;
+        }
+
+        .header-text {
+            text-align: center;
+            width: 100%;
+        }
+
+        .univ-name {
+            font-family: 'Arial Black', sans-serif;
+            font-size: 15pt;
+            color: #002147;
+            margin: 0;
+        }
+
+        .campus-name {
+            font-family: 'Arial', sans-serif;
+            font-size: 9.5pt;
+            font-weight: bold;
+            color: #444;
+            margin-top: 3px;
+        }
+
+        /* --- OFFICIALS --- */
+        .officials-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Arial', sans-serif;
+            font-size: 9pt;
+            color: #333;
+            padding: 0 5px;
+        }
+
+        .official-block {
+            line-height: 1.4;
+        }
+
+        .official-name {
+            font-weight: bold;
+            color: #002147;
+            font-size: 9.5pt;
+        }
+
+        /* --- META & TITLE --- */
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Arial', sans-serif;
+            font-size: 9.5pt;
+            border-top: 1px dashed #ddd;
+            padding-top: 8px;
+            margin-bottom: 10px;
+        }
+
+        .cert-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .cert-title h2 {
+            font-family: 'Arial', sans-serif;
+            font-size: 14pt;
+            font-weight: bold;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            color: #002147;
+            margin: 0;
+        }
+
+        /* --- CONTENT --- */
+        .content {
+            text-align: justify;
+            line-height: 1.5;
+            font-size: 10.5pt;
+            margin-bottom: 5px;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #000;
+        }
+
+        /* --- TABLE --- */
+        .table-container {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .fee-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Arial', sans-serif;
+            font-size: 9pt;
+        }
+
+        .fee-table th {
+            background-color: #002147;
+            color: #fff;
+            padding: 6px;
+            border: 1px solid #002147;
+            text-align: center;
+        }
+
+        .fee-table td {
+            padding: 5px 8px;
+            border: 1px solid #ccc;
+        }
+
+        .fee-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .total-row td {
+            background-color: #e8edf3;
+            font-weight: bold;
+            color: #002147;
+            border-top: 3px double #002147;
+        }
+
+        /* --- BANK DETAILS --- */
+        .bank-section {
+            width: 100%;
+        }
+
+        .bank-main-header {
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 11pt;
+            color: #002147;
+            margin-bottom: 4px;
+            padding-left: 2px;
+        }
+
+        .bank-container-box {
+            border: 1px solid #b0c4de;
+            border-radius: 4px;
+            padding: 12px 15px;
+            background-color: #fff;
+            font-family: 'Arial', sans-serif;
+            font-size: 9.5pt;
+        }
+
+        .account-group {
+            margin-bottom: 12px;
+        }
+
+        .acc-header {
+            color: #002147;
+            font-weight: bold;
+            text-decoration: underline;
+            margin-bottom: 5px;
+            font-size: 10pt;
+        }
+
+        .acc-details-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3px;
+            align-items: baseline;
+        }
+
+        .acc-left {
+            flex: 1;
+            padding-right: 5px;
+            white-space: nowrap;
+        }
+
+        .acc-right {
+            width: 160px;
+            text-align: left;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #000;
+            margin-right: 4px;
+        }
+
+        .val {
+            color: #333;
+        }
+
+        .note-separator {
+            border-top: 1px dashed #999;
+            margin-top: 10px;
+            padding-top: 6px;
+            font-style: italic;
+            font-size: 9pt;
+            color: #000;
+        }
+
+        /* --- FOOTER --- */
+        .signature-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5px;
+        }
+
+        .qr-box img {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #333;
+            padding: 2px;
+        }
+
+        .qr-label {
+            font-size: 7pt;
+            font-weight: bold;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        .auth-sign {
+            text-align: center;
+            min-width: 200px;
+            padding-bottom: 20px;
+        }
+
+        .auth-name {
+            font-weight: bold;
+            font-size: 10pt;
+            color: #002147;
+        }
+
+        .auth-desig {
+            font-size: 9pt;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .bottom-bar {
+            border-top: 2px solid #002147;
+            padding-top: 10px;
+            margin-top: 15px;
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            font-size: 8pt;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="border-container">
+        <img src="{{ logo_img }}" class="watermark-img" alt="Watermark" />
+
+        <div class="top-section-wrapper">
+            <div class="header-section">
+                <img src="{{ logo_img }}"
+                    class="logo-img" alt="Logo">
+                
+                <div class="header-text">
+                    <h1 class="univ-name">ANNA UNIVERSITY</h1>
+                    <div class="campus-name">REGIONAL CAMPUS COIMBATORE - HOSTEL</div>
+                    <div style="font-size: 9pt; margin-top:2px;">Maruthamalai Main Road, Navavoor, Coimbatore - 641 046</div>
+                </div>
+            </div>
+
+            <div class="officials-row">
+                <div class="official-block" style="text-align: left;">
+                    <div class="official-name">Dr. M. Saravanakumar, Ph.D.</div>
+                    <div>Dean-Regional Campus (Warden)</div>
+                    <div>Ph: 0422 2200299</div>
+                </div>
+                <div class="official-block" style="text-align: right;">
+                    <div class="official-name">Dr. M. Yuvaraju, Ph.D.</div>
+                    <div>Deputy Warden</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="meta-wrapper">
+            <div class="info-row">
+                <div><strong>Ref No:</strong> {{ certificate_number }}</div>
+                <div><strong>Date:</strong> {{ certificate_date }}</div>
+            </div>
+
+            <div class="cert-title">
+                <h2>TO WHOMSOEVER IT MAY CONCERN</h2>
+            </div>
+        </div>
+
+        <div class="content">
+            This is to certify that <span class="highlight">{{ student.name }}</span>
+            (Reg No: <span class="highlight">{{ student.register_number }}</span>) is a Bonafide Student of this
+            Regional Campus,
+            studying in <span class="highlight">{{ degree_dept }}</span>.
+            The student is an inmate of the University Hostel for the academic year <span class="highlight">{{
+                current_year }}-{{ next_year }}</span>.
+            The duration of the degree programme is from <strong>{{ student.admission_year }}</strong> to <strong>{{
+                student.graduation_year }}</strong>.
+            <br><br>
+            The approximate expenditure to be incurred per year for hostel accommodation is detailed below:
+        </div>
+
+        <div class="table-container">
+            <table class="fee-table">
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">S.No</th>
+                        <th style="width: 30%;">Academic Year</th>
+                        <th style="width: 30%;">Establishment Fee</th>
+                        <th style="width: 30%;">Mess Fee (Approx)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in fee_rows %}
+                    <tr>
+                        <td style="text-align:center;">{{ row.s_no }}</td>
+                        <td style="text-align:center;">{{ row.year }}</td>
+                        <td style="text-align:center;">Rs. {{ row.establishment }}/-</td>
+                        <td style="text-align:center;">Rs. {{ row.mess }}/-</td>
+                    </tr>
+                    {% endfor %}
+                    <tr class="total-row">
+                        <td colspan="2" style="text-align:right; padding-right: 20px;">GRAND TOTAL</td>
+                        <td style="text-align:center;">Rs. {{ total_establishment }}/-</td>
+                        <td style="text-align:center;">Rs. {{ total_mess }}/-</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="bank-section">
+            <div class="bank-main-header">Bank Details</div>
+
+            <div class="bank-container-box">
+                <div class="account-group">
+                    <div class="acc-header">Establishment Fee Account:</div>
+                    <div class="acc-details-row">
+                        <div class="acc-left">
+                            <span class="label">A/C Name:</span> <span class="val">{{ establishment_account.account_name
+                                }}</span>
+                        </div>
+                        <div class="acc-right">
+                            <span class="label">A/C No:</span> <span class="val">{{ establishment_account.account_number
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="acc-details-row">
+                        <div class="acc-left">
+                            <span class="label">Bank:</span> <span class="val">{{ establishment_account.bank_name
+                                }}</span>
+                        </div>
+                        <div class="acc-right">
+                            <span class="label">IFSC:</span> <span class="val">{{ establishment_account.ifsc_code
+                                }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="account-group" style="margin-bottom: 0;">
+                    <div class="acc-header">Mess Fee Account:</div>
+                    <div class="acc-details-row">
+                        <div class="acc-left">
+                            <span class="label">A/C Name:</span> <span class="val">{{ mess_account.account_name
+                                }}</span>
+                        </div>
+                        <div class="acc-right">
+                            <span class="label">A/C No:</span> <span class="val">{{ mess_account.account_number
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="acc-details-row">
+                        <div class="acc-left">
+                            <span class="label">Bank:</span> <span class="val">{{ mess_account.bank_name }}</span>
+                        </div>
+                        <div class="acc-right">
+                            <span class="label">IFSC:</span> <span class="val">{{ mess_account.ifsc_code }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note-separator">
+                    Note: Amount to be transferred through NEFT/RTGS/Bank transfer to the respective Account.
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="signature-section">
+                <div class="qr-box">
+                    <img src="{{ qr_code }}" alt="QR">
+                    <div class="qr-label">SCAN TO VERIFY</div>
+                </div>
+                <div class="auth-sign">
+                    <div class="auth-name">Dr. M. Saravanakumar</div>
+                    <div class="auth-desig">DEAN - REGIONAL CAMPUS (WARDEN)</div>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                System Generated Document | AURCCBE Hostel
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
