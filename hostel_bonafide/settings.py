@@ -7,7 +7,7 @@ from datetime import timedelta
 import os
 import environ
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialize environment variables
@@ -15,18 +15,31 @@ env = environ.Env(
     DEBUG=(bool, False)
 )
 
-# Read .env file
+# Read .env (optional on Render, but safe locally)
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY', default='django-insecure-change-this-in-production-use-env-file')
+# SECURITY WARNING: keep secret key safe
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-change-this-in-production")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+# DEBUG mode
+DEBUG = env("DEBUG")
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+# Allowed Hosts
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
 
-# Application definition
+# ============================
+# CORS SETTINGS
+# ============================
+CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", default=True)
+
+# Only used if CORS_ALLOW_ALL_ORIGINS=False
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+
+CORS_ALLOW_CREDENTIALS = True
+
+# ============================
+# APPLICATIONS
+# ============================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -34,12 +47,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Third party apps
+
+    # Third-party
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
-    
+
     # Local apps
     'accounts',
     'students',
@@ -48,6 +61,9 @@ INSTALLED_APPS = [
     'audit',
 ]
 
+# ============================
+# MIDDLEWARE
+# ============================
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -62,6 +78,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'hostel_bonafide.urls'
 
+# ============================
+# TEMPLATES
+# ============================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -80,7 +99,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hostel_bonafide.wsgi.application'
 
-# Database
+# ============================
+# DATABASE (SQLite by default)
+# ============================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -88,24 +109,25 @@ DATABASES = {
     }
 }
 
-# Custom User Model
+# ============================
+# AUTH SETTINGS
+# ============================
 AUTH_USER_MODEL = 'accounts.User'
 
-# Authentication backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# Password validation
+# ============================
+# PASSWORD VALIDATION
+# ============================
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-        'OPTIONS': {
-            'min_length': 8,
-        }
+        'OPTIONS': {'min_length': 8}
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -115,25 +137,27 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# Internationalization
+# ============================
+# INTERNATIONALIZATION
+# ============================
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# ============================
+# STATIC & MEDIA FILES
+# ============================
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# REST Framework Settings
+# ============================
+# REST FRAMEWORK
+# ============================
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -153,7 +177,9 @@ REST_FRAMEWORK = {
     }
 }
 
-# JWT Settings
+# ============================
+# JWT SETTINGS
+# ============================
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -163,22 +189,11 @@ SIMPLE_JWT = {
     'ALGORITHM': 'HS256',
     'SIGNING_KEY': SECRET_KEY,
     'AUTH_HEADER_TYPES': ('Bearer',),
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
-# CORS Settings
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-])
-
-CORS_ALLOW_CREDENTIALS = True
-
-# Security Settings
+# ============================
+# SECURITY SETTINGS
+# ============================
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
@@ -191,11 +206,18 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
-# Bonafide Certificate Settings
-BONAFIDE_SIGNATURE_KEY = env('BONAFIDE_SIGNATURE_KEY', default='change-this-to-strong-signature-key')
+# ============================
+# BONAFIDE SETTINGS
+# ============================
+BONAFIDE_SIGNATURE_KEY = env(
+    'BONAFIDE_SIGNATURE_KEY',
+    default='change-this-to-strong-signature-key'
+)
 UNIVERSITY_NAME = 'Anna University Regional Campus'
 UNIVERSITY_LOCATION = 'Coimbatore'
 
-# Session Settings
+# ============================
+# SESSION SETTINGS
+# ============================
 SESSION_COOKIE_AGE = 3600  # 1 hour
 SESSION_SAVE_EVERY_REQUEST = True
