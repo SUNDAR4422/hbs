@@ -25,7 +25,7 @@ SECRET_KEY = env("SECRET_KEY", default="django-insecure-change-this-in-productio
 DEBUG = env("DEBUG")
 
 # Allowed Hosts
-ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1"])
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["localhost", "127.0.0.1",'sundar4422.pythonanywhere.com'])
 
 # ============================
 # CORS SETTINGS
